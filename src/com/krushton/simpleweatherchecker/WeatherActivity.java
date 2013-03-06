@@ -23,7 +23,6 @@ import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
 import android.app.Activity;
-import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
@@ -31,7 +30,6 @@ import android.widget.ListView;
 
 public class WeatherActivity extends Activity {
 	
-	LocationManager manager;
 	WeatherData[] cityDataList; 
 	WeatherListAdapter mAdapter;
 	final String[] citiesList = {"San Francisco", "Seattle", "Chicago", "Los Angeles"};
@@ -86,7 +84,7 @@ public class WeatherActivity extends Activity {
 			XPathExpression cityName = xpath.compile("/response/current_observation/display_location/city");
 			XPathExpression time = xpath.compile("/response/current_observation/observation_time");
 			XPathExpression temp = xpath.compile("/response/current_observation/temperature_string");
-			XPathExpression weather = xpath.compile("/response/current_observation/weather");
+			
 			
 			//locate the WeatherData object matching the returned XML document by comparing the city name
 			for (WeatherData cd : cityDataList) {
@@ -97,8 +95,10 @@ public class WeatherActivity extends Activity {
 					cd.name = cityName.evaluate(doc);
 					cd.updateTime = time.evaluate(doc);
 					cd.temp = temp.evaluate(doc);
-					cd.weatherInfo = weather.evaluate(doc);
-					
+                    
+					//can also parse doc with DOM API
+					cd.weatherInfo = doc.getElementsByTagName("weather").item(0).getTextContent();
+                    
 					//let the list adapter know to redisplay the list.
 					mAdapter.notifyDataSetChanged();
 					break;
