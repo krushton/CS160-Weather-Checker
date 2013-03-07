@@ -1,0 +1,1 @@
+Sample demonstrating GET requests, ListView, and XML parsing in Android. Uses the wunderground.com API. In order to run it you will need to replace the API_KEY variable in the WeatherActivity.java file with your own API key from wunderground.
